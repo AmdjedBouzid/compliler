@@ -1,0 +1,13 @@
+Errors:
+Error: token bad formed  on line 1
+Error: token bad formed  on line 1
+Error: token bad formed  on line 1
+Error: token bad formed  on line 1
+Error: token bad formed  on line 1
+Error: token bad formed  on line 1
+Error: token bad formed  on line 2
+Error: Invalid character on line 2
+Error: Invalid character on line 2
+Error: Invalid character on line 2
+Error: Invalid character on line 2
+Error: Invalid character on line 3

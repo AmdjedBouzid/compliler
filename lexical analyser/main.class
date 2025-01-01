@@ -1,0 +1,86 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class LexicalAnalyzer {
+    public static void main(String[] args) {
+        String inputFilePath = "test.txt";
+        String outputFilePath = "token.txt";
+        
+        List<String> tokens = new ArrayList<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FilekReader(inputFilePath))) {
+            int currentChar;
+            while ((currentChar = reader.read()) != -1) {
+                char ch = (char) currentChar;
+                
+                switch (ch) {
+                    case '>':
+                        if (reader.markSupported()) {
+                            reader.mark(1); // Mark current position
+                            if (reader.read() == '=') {
+                                tokens.add("(cs,>=)");
+                            } else {
+                                reader.reset(); // Go back to previous position
+                                tokens.add("(cs,>)");
+                            }
+                        }
+                        break;
+                        
+                    case '<':
+                        if (reader.markSupported()) {
+                            reader.mark(1);
+                            if (reader.read() == '=') {
+                                tokens.add("(cs,<=)");
+                            } else {
+                                reader.reset();
+                                tokens.add("(cs,<)");
+                            }
+                        }
+                        break;
+                        
+                    case '=':
+                        if (reader.markSupported()) {
+                            reader.mark(1);
+                            if (reader.read() == '=') {
+                                tokens.add("(cs,==)");
+                            } else {
+                                reader.reset();
+                                tokens.add("(cs,=)");
+                            }
+                        }
+                        break;
+                    
+                    // Ignore spaces and newlines
+                    case ' ':
+                    case '\n':
+                    case '\r':
+                        break;
+                    
+                    // Handle unrecognized characters
+                    default:
+                        System.err.println("Error: Unrecognized character '" + ch + "'");
+                }
+            }
+            
+            // Write tokens to output file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
+                for (String token : tokens) {
+                    writer.write(token);
+                    writer.newLine();
+                }
+            }
+            
+            // Display tokens from output file
+            try (BufferedReader tokenReader = new BufferedReader(new FileReader(outputFilePath))) {
+                String line;
+                while ((line = tokenReader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+            
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+}
